@@ -1,0 +1,5 @@
+cmd
+mysql -uroot -proot1234
+create database member_details
+exit
+mysql -uroot -proot member_details <F:\**\*.dump
