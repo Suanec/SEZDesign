@@ -34,6 +34,31 @@ def isNum( _c : Char ) : Boolean = _c >= '0' && _c <= '9'
     }  
     data
   }
+  def convertNum(_str : String) : Double = {
+    val rst = _str.head match {
+      case '-' => "-0" + _str.tail 
+      case '.' => "0" + _str
+      case _ => _str
+    }
+    rst.toDouble
+  }
+
+  val src = sc.textFile(trainFile).map(_.split(','))
+  val dataHead = src.first
+  val labelIdx = dataHead.indexOf("Y")
+  val data = src.filter(_.head != dataHead.head).
+    map(x => new LabeledPoint(convertNum(x(labelIdx)),
+      new DenseVector(x.indices.filterNot(i => i == labelIdx).map(i => convertNum(x(i)
+        )).toArray)))
+  def csvNewFile(_path : String, _rateZero : Int = 1) : RDD[Array[String]] = {
+    val src = sc.textFile(_path).map(_.split(','))
+    val dataHead = src.first
+    val labelIdx = dataHead.indexOf("Y")
+    val data = src.filter(_.head != dataHead.head).
+      map(x => new LabeledPoint(convertNum(x(labelIdx)),
+        new DenseVector(x.indices.filterNot(i => i == labelIdx).map(i => convertNum(x(i)
+          )).toArray)))
+  }
 
 
 val data = csvFile(trainFile)
