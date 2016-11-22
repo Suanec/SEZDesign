@@ -1,0 +1,57 @@
+import java.net.URL
+import java.io.FileOutputStream
+
+object crawPicFromCSTronto{
+    def download(_url : String, _rst : String = """.\imgs\""") : Int = {
+      val is_url = new URL(_url)
+      val is_connection = is_url.openConnection
+      val is = is_connection.getInputStream
+      var size = 0
+      var count = 0
+      while(count < 100) {
+        size += is.available
+        count += 1
+      }
+      val arr = new Array[Byte](size + 1)
+      var sum = 0
+      var idx = 0
+      val output = _rst + _url.split('/').last
+      val ofp = new FileOutputStream(output)
+      count = 0
+      while(sum < size && idx >= 0 && count < 100){
+        idx = is.read(arr)
+        sum += idx
+        println(s"read ${idx}, downloaded ${sum} from ${size}, remains ${size - sum}.")
+        println( ofp + output )
+        ofp.write(arr.splitAt(idx)._1)
+        count += 1
+      }
+      while(count>0) println(s" ${count -= 1}, ${count} -> count ")
+      ofp.flush
+      ofp.close
+      println(s"download ${output} finished! downloaded ${sum}.")
+      sum
+    }
+    def down(x : String) = download(x)
+  def downloadMain(args : Array[String]) : Unit = {
+    val url = """http://www.cs.toronto.edu/~rkiros/adv_L.html"""
+    val web = scala.io.Source.fromURL(url).getLines.toArray
+    val imgs = web.filter(_.contains("Image"))
+    val urls = web.filter(_.contains("img"))
+    val wsp = url.dropRight(11)
+    val downs = urls.map(wsp + _.split("src=\"").last.split('>').head.drop(1).dropRight(1))
+
+    val rst = """.\imgs\"""
+    val fp = new java.io.File(rst).listFiles.map(_.toString.split('\\').last)
+    downs.filter(x => fp.indexOf(x.split('/').last) == -1).map(down)
+  }
+  def main(args : Array[String]) : Unit = downloadMain(args)
+}
+
+// val iss = downs.map( x => new URL(x).openConnection.getInputStream )
+
+// val url = """http://www.cs.toronto.edu/~rkiros/adv_L.html"""
+// val doc = org.jsoup.Jsoup.connect(url).get
+// doc.select("src=")
+// doc.select("img[src~=(?i)\\.(png|jpe?g)]")
+// val imgs = doc.select("img[src~=(?i)\\.(png|jpe?g)]")
