@@ -1,3 +1,4 @@
+<<<<<<< HEAD
   def createSchema(schemaString: String): StructType = StructType(
 <<<<<<< HEAD
 
@@ -95,3 +96,35 @@ spark.sqlContext.createDataFrame(tableRDD, tableSchema).toDF
 
 val dfData = sqlContext.createDataFrame(dfRDD).toDF("label", "features")
 >>>>>>> branches
+=======
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+test Branch
+>>>>>>> testBranches
