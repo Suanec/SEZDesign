@@ -1,0 +1,36 @@
+val path = """D:\betn\KDDCUP2017\datas\dataSets\training\"""
+val wks = """file:\\\"""
+val trajFile = wks + """trajectories(table 5)_training.csv"""
+val temPath = path + "\\temp\\"
+
+import org.apache.spark.mllib.util.MLUtils
+
+// val data = MLUtils.loadLibSVMFile(sc,trajFile)
+val data = sc.textFile(trajFile)
+// data.count = 109245
+
+// data.take(3).mkString("\n")
+// "intersection_id","tollgate_id","vehicle_id","starting_time","travel_seq","travel_time"
+// "B","3","1065642","2016-07-19 00:14:24","105#2016-07-19 00:14:24#9.56;100#2016-07-19 00:14:34#6.75;111#2016-07-19 00:14:41#13.00;
+// 103#2016-07-19 00:14:54#7.47;122#2016-07-19 00:15:02#32.85","70.85"
+// "B","3","1047198","2016-07-19 00:35:56","105#2016-07-19 00:35:56#11.58;100#2016-07-19 00:36:08#7.44;111#2016-07-19 00:36:15#16.23
+// ;103#2016-07-19 00:36:32#5.95;122#2016-07-19 00:36:40#104.79","148.79000000000002"
+
+val d = data.map( x => x.filterNot(_ == '"').split(',') )
+val dataA = d.filter(x => x.head == "A")
+val dataB = d.filter(_.head == "B")
+val dataC = d.filter(_.head == "C")
+
+// dataA.count = 70852
+// dataB.count = 25377
+// dataC.count = 13015
+
+import java.io.PrintWriter
+import org.apache.spark.rdd.RDD
+def saveLocal( data : RDD[Array[String]], fileName : String) = {
+  val p = new PrintWriter(temPath + fileName, "utf-8")
+  val rst = data.map(_.mkString(",")).collect.mkString("\n")
+  p.write(rst + "\n")
+  p.flush
+  p.close
+}
