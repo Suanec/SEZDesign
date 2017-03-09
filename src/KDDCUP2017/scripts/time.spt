@@ -1,0 +1,14 @@
+import java.util.Locale  
+import java.text.SimpleDateFormat  
+import java.util.Date   
+
+val atime = "2017-03-07 17:22:58"
+val btime = "2017-03-07 17:53:22"
+
+import java.util.Locale  
+import java.text.SimpleDateFormat  
+import java.util.Date   
+val loc = new Locale("en")  
+val fm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",loc)  
+val dt2 = fm.parse(atime);  
+dt2.getTime()  
