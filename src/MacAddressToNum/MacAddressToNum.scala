@@ -18,8 +18,7 @@ object MacAddressToNum {
   def charToBinary( _c : Char ) : String = {
     if( '0' <= _c && '9' >= _c ) return _c.toInt.toBinaryString
     if( 'A' <= _c && 'F' >= _c ) return (_c - 'A' + 10).toBinaryString
-    else {
-    println("${_c} is not a 0x num.") return ""
+    else { println(s"${_c} is not a 0x num."); return "" }
   }
   def binaryStringToBigInt( _str : String ) : BigInt = {
     if(_str.size < 1){
