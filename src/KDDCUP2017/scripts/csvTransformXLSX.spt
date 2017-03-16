@@ -1,0 +1,19 @@
+val dataPath = """D:\ScalaSpace\SEZDesign\src\KDDCUP2017\rst"""
+val csvFile = dataPath + "\\nodeTravelCost.csv"
+val data = scala.io.Source.fromFile(csvFile).getLines
+val kv = data.map{
+  line =>
+    val splits = line.split(',')
+    val key = splits.head
+    val values = splits.tail.mkString("\n")
+    key -> values
+}.toArray
+val rst = dataPath + "\\nodeTravelCostCol.rst"
+val p = new java.io.PrintWriter(rst)
+kv.map{
+  kv1 =>
+    p.write(kv1._1 + "=\n")
+    p.write(kv1._2 + "\n")
+}
+p.flush
+p.close
